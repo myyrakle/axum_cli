@@ -1,5 +1,6 @@
 mod cli;
 mod constants;
+mod utils;
 
 use clap::Parser;
 use cli::{command::Command, Args};
