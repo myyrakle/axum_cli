@@ -1,4 +1,4 @@
-use super::parse_zip::ParsedZipData;
+use super::zip::ParsedZipData;
 
 pub async fn write_template(template: ParsedZipData, base_path: String) {
     for (path, data) in template.into_iter() {
