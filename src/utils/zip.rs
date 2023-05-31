@@ -35,7 +35,6 @@ pub async fn get_data_pair_from_zip(
         let file = zip.by_index(i)?;
 
         let template_name = file.name().split("/").nth(1).map(ToOwned::to_owned);
-        let is_template = file.name().split("/").nth(2).is_some();
 
         let mut split = file.name().split("/");
         split.next();
@@ -56,13 +55,16 @@ pub async fn get_data_pair_from_zip(
             None
         };
 
+        // root file pass
+        if path == "" {
+            continue;
+        }
+
         let file_value = (path, data);
 
-        if is_template {
-            if let Some(template_name) = template_name {
-                if target_template_name == template_name {
-                    file_list.push(file_value);
-                }
+        if let Some(template_name) = template_name {
+            if target_template_name == template_name {
+                file_list.push(file_value);
             }
         }
     }
