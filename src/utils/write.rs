@@ -1,6 +1,13 @@
+use std::path::Path;
+
 use super::zip::ParsedZipData;
 
 pub async fn write_template(template: ParsedZipData, base_path: String) {
+    if !Path::new(base_path.as_str()).exists() {
+        std::fs::create_dir(&base_path).unwrap();
+        println!(">>>>> {} >>> directory created", base_path);
+    }
+
     for (path, data) in template.into_iter() {
         let path = [base_path.clone(), path].join("/");
 
@@ -22,4 +29,5 @@ pub async fn write_template(template: ParsedZipData, base_path: String) {
     }
 
     println!("#### Generation Success ####");
+    println!("#### Just Run `cargo run` ####")
 }

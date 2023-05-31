@@ -1,17 +1,17 @@
 [package]
-name = "axum_generator"
+name = "axum_cli"
 version = "0.1.0"
 edition = "2021"
 authors = ["myyrakle <sssang97@naver.com>"]
 description = "Axum Web Template Generator" 
-keywords = ["axum", "generator"] 
+keywords = ["axum", "generator", "cli"] 
 license = "MIT" 
 include = ["src/*", "Cargo.toml"] 
 exclude = [] 
 readme = "README.md" 
-repository = "https://github.com/myyrakle/axum_generator" 
-documentation = "https://github.com/myyrakle/axum_generator/blob/master/README.md" 
-homepage = "https://github.com/myyrakle/axum_generator/blob/master/README.md" 
+repository = "https://github.com/myyrakle/axum_cli" 
+documentation = "https://github.com/myyrakle/axum_cli/blob/master/README.md" 
+homepage = "https://github.com/myyrakle/axum_cli/blob/master/README.md" 
 
 [dependencies]
 reqwest = { version = "0.11", features = ["json"] }

@@ -28,8 +28,8 @@ impl CargoToml {
 }
 
 pub fn edit_cargo_toml(
-    source: String,
     project_name: String,
+    source: String,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let mut cargo_toml: CargoToml = toml::from_str(&source)?;
     cargo_toml.set_name(project_name);
