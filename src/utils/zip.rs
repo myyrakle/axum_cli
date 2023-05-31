@@ -34,8 +34,8 @@ pub async fn get_data_pair_from_zip(
     for i in 0..zip.len() {
         let file = zip.by_index(i)?;
 
-        let template_name = file.name().split("/").nth(2).map(ToOwned::to_owned);
-        let is_template = file.name().split("/").nth(3).is_some();
+        let template_name = file.name().split("/").nth(1).map(ToOwned::to_owned);
+        let is_template = file.name().split("/").nth(2).is_some();
 
         let mut split = file.name().split("/");
         split.next();
