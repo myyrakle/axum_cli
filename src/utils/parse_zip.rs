@@ -3,11 +3,13 @@ use std::io::Read;
 
 use std::borrow::ToOwned;
 
+pub type ParsedZipData = Vec<(String, Option<Vec<u8>>)>;
+
 // zip 데이터를 가공해서 (파일명, 데이터) 쌍 획득
 async fn get_data_pair_from_zip(
     target_template_name: &str,
     mut zip: ZipData,
-) -> Result<Vec<(String, Option<Vec<u8>>)>, Box<dyn std::error::Error>> {
+) -> Result<ParsedZipData, Box<dyn std::error::Error>> {
     let mut file_list = vec![];
 
     for i in 0..zip.len() {
