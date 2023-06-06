@@ -1,5 +1,5 @@
 [package]
-name = "axum_generator"
+name = "axum_cli"
 version = "0.2.0"
 edition = "2021"
 authors = ["myyrakle <sssang97@naver.com>"]
