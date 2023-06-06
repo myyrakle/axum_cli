@@ -39,7 +39,6 @@ pub async fn get_data_pair_from_zip(
         let mut split = file.name().split("/");
         split.next();
         split.next();
-        split.next();
         let path: Vec<&str> = split.collect();
         let path = path.join("/");
 
