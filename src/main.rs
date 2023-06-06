@@ -23,6 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             run::init::run_init(project_name, template_name).await;
         }
+        _ => {}
     }
 
     Ok(())
