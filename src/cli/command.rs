@@ -1,6 +1,6 @@
 use self::init::InitCommand;
+use self::middleware::MiddlewareArgs;
 use self::new::NewCommand;
-use self::router::MiddlewareArgs;
 use self::router::RouterArgs;
 
 pub(crate) mod init;

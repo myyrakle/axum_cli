@@ -5,7 +5,7 @@ mod utils;
 
 use clap::Parser;
 use cli::{
-    command::{router::RouterCommand, Command},
+    command::{middleware::MiddlewareCommand, router::RouterCommand, Command},
     Args,
 };
 
@@ -32,6 +32,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let template_name = command.option.template_name.unwrap_or("crud".to_owned());
 
                 run::router::new::run_new_router(router_name, template_name).await;
+            }
+        },
+        Command::Middleware(command) => match command.command {
+            MiddlewareCommand::New(command) => {
+                let _middleware_name = command.middleware_name;
+
+                // run::middleware::new::run_new_middleware(middleware_name, template_name).await;
             }
         },
     }
