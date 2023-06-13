@@ -36,9 +36,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
         Command::Middleware(command) => match command.command {
             MiddlewareCommand::New(command) => {
-                let _middleware_name = command.middleware_name;
+                let middleware_name = command.middleware_name;
 
-                // run::middleware::new::run_new_middleware(middleware_name, template_name).await;
+                run::middleware::new::run_new_middleware(middleware_name).await;
             }
         },
     }

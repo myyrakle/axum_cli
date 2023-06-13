@@ -11,10 +11,10 @@ use crate::{
 
 use convert_case::{Case, Casing};
 
-pub async fn run_new_middleware(middleware_name: String, template_name: String) {
+pub async fn run_new_middleware(middleware_name: String) {
     let snake_case = middleware_name.to_case(Case::Snake);
     let pascal_case = middleware_name.to_case(Case::Pascal);
-    let kebab_case = middleware_name.to_case(Case::Kebab);
+    let _kebab_case = middleware_name.to_case(Case::Kebab);
 
     let template_name = "middleware_default";
 
@@ -50,9 +50,15 @@ pub async fn run_new_middleware(middleware_name: String, template_name: String) 
         panic!("src/middlewares directory not found")
     }
 
-    write_template(mapped, base_path).await;
+    write_template(mapped, base_path.to_str().unwrap().to_string()).await;
 
-    let root_router_code = std::fs::read_to_string(&root_router_path).unwrap();
+    let middlewares_root_mod_path = base_path.join("mod.rs");
+
+    if !middlewares_root_mod_path.exists() {
+        panic!("src/middlewares/mod.rs not found")
+    }
+
+    let root_router_code = std::fs::read_to_string(&middlewares_root_mod_path).unwrap();
     let new_line = if root_router_code.contains("\r\n") {
         "\r\n"
     } else {
@@ -60,18 +66,12 @@ pub async fn run_new_middleware(middleware_name: String, template_name: String) 
     };
 
     {
-        let middlewares_root_mod_path = base_path.join("mod.rs");
-
-        if !middlewares_root_mod_path.exists() {
-            panic!("src/middlewares/mod.rs not found")
-        }
-
         let import_code = format!(r#"{new_line}pub(crate) mod {snake_case};"#);
 
         let mut file = std::fs::OpenOptions::new()
             .write(true)
             .append(true)
-            .open(&root_module_path)
+            .open(&middlewares_root_mod_path)
             .unwrap();
         file.write_all(import_code.as_bytes()).unwrap();
 
