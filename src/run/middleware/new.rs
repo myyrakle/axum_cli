@@ -23,10 +23,6 @@ pub async fn run_new_middleware(middleware_name: String, template_name: String) 
         .await
         .unwrap();
 
-    let nest_code = format!(
-        r#"        .nest("/{kebab_case}", crate::routes::{snake_case}::router::get_router().await)"#
-    );
-
     let mapped = parsed_zip
         .into_iter()
         .map(|(path, data)| {
@@ -48,25 +44,13 @@ pub async fn run_new_middleware(middleware_name: String, template_name: String) 
         })
         .collect::<Vec<_>>();
 
-    let base_path = PathBuf::new().join("src").join("routes");
+    let base_path = PathBuf::new().join("src").join("middlewares");
 
     if !base_path.exists() {
-        panic!("src/routes directory not found")
+        panic!("src/middlewares directory not found")
     }
-
-    let base_path = base_path.join(&snake_case).to_str().unwrap().to_owned();
 
     write_template(mapped, base_path).await;
-
-    let root_router_path = PathBuf::new()
-        .join("src")
-        .join("routes")
-        .join("root")
-        .join("router.rs");
-
-    if !root_router_path.exists() {
-        panic!("src/routes/root/router.rs file not found")
-    }
 
     let root_router_code = std::fs::read_to_string(&root_router_path).unwrap();
     let new_line = if root_router_code.contains("\r\n") {
@@ -76,32 +60,10 @@ pub async fn run_new_middleware(middleware_name: String, template_name: String) 
     };
 
     {
-        let root_router_code: String = root_router_code
-            .split(new_line)
-            .map(|line| {
-                if line.contains("// Append the new route here.") {
-                    format!("{nest_code}{new_line}{line}")
-                } else {
-                    line.to_owned()
-                }
-            })
-            .collect::<Vec<_>>()
-            .join(new_line);
+        let middlewares_root_mod_path = base_path.join("mod.rs");
 
-        let mut file = std::fs::OpenOptions::new()
-            .write(true)
-            .truncate(true)
-            .open(&root_router_path)
-            .unwrap();
-        file.write_all(root_router_code.as_bytes()).unwrap();
-        // println!(">>>>> {:?} >>> file updated", root_router_path);
-    }
-
-    {
-        let root_module_path = PathBuf::new().join("src").join("routes").join("mod.rs");
-
-        if !root_module_path.exists() {
-            panic!("src/routes/mod.rs file not found")
+        if !middlewares_root_mod_path.exists() {
+            panic!("src/middlewares/mod.rs not found")
         }
 
         let import_code = format!(r#"{new_line}pub(crate) mod {snake_case};"#);
