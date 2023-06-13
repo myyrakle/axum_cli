@@ -1,6 +1,6 @@
 [package]
 name = "axum_cli"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["myyrakle <sssang97@naver.com>"]
 description = "Axum Web Template Generator" 
